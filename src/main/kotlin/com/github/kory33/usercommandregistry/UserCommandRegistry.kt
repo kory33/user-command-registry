@@ -5,7 +5,7 @@ import com.github.kory33.chatgui.listener.PlayerChatInterceptor
 import com.github.kory33.chatgui.manager.PlayerInteractiveInterfaceManager
 import com.github.kory33.updatenotificationplugin.bukkit.github.GithubUpdateNotifyPlugin
 import com.github.kory33.usercommandregistry.command.UCRCommandExecutor
-import org.bstats.Metrics
+import org.bstats.bukkit.Metrics
 import org.bukkit.event.HandlerList
 
 const val COMMAND_STRING = "ucr"
