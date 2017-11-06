@@ -2,8 +2,16 @@ package com.github.kory33.usercommandregistry.data
 
 import com.google.gson.JsonArray
 
-class CommandRegistry {
+class CommandRegistry(array: JsonArray) {
     private val aliasSet: MutableSet<CommandAlias> = HashSet()
+
+    init {
+        array.map {
+            try { CommandAlias(it.asJsonObject) } catch (_ : Exception) { null }
+        }.forEach {
+            addAlias(it ?: return@forEach)
+        }
+    }
 
     fun addAlias(alias: CommandAlias) {
         val existingAlias = getAlias(alias.aliasString)
@@ -20,16 +28,5 @@ class CommandRegistry {
         aliasSet.forEach { array.add(it.toJsonObject()) }
 
         return array
-    }
-
-    companion object {
-        fun fromJsonArray(array: JsonArray): CommandRegistry {
-            val registry = CommandRegistry()
-
-            array.map { CommandAlias.fromJsonObject(it.asJsonObject) }
-                    .forEach { registry.addAlias(it) }
-
-            return registry
-        }
     }
 }
