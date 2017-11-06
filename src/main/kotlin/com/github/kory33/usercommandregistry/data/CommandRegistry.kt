@@ -2,10 +2,10 @@ package com.github.kory33.usercommandregistry.data
 
 import com.google.gson.JsonArray
 
-class CommandRegistry(array: JsonArray) {
+class CommandRegistry() {
     private val aliasSet: MutableSet<CommandAlias> = HashSet()
 
-    init {
+    constructor(array: JsonArray) : this() {
         array.map {
             try { CommandAlias(it.asJsonObject) } catch (_ : Exception) { null }
         }.forEach {
