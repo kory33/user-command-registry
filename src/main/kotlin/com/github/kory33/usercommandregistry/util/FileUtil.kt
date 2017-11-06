@@ -1,6 +1,6 @@
 package com.github.kory33.usercommandregistry.util
 
-import com.google.gson.JsonObject
+import com.google.gson.JsonElement
 import com.google.gson.JsonParser
 import java.io.File
 import java.io.IOException
@@ -50,7 +50,7 @@ object FileUtil {
      *
      * @param jsonObject a source json object
      */
-    fun writeJSON(targetFile: File, jsonObject: JsonObject) {
+    fun writeJson(targetFile: File, jsonObject: JsonElement) {
         if (!targetFile.exists()) {
             val parent = targetFile.parentFile
             if (!parent.exists() && !parent.mkdirs()) {
@@ -67,9 +67,9 @@ object FileUtil {
     /**
      * Read json data from the given target file
      */
-    fun readJSON(targetFile: File): JsonObject {
+    fun readJson(targetFile: File): JsonElement {
         Files.newBufferedReader(targetFile.toPath(), fileFormat)
-                .use { reader -> return JsonParser().parse(reader).asJsonObject }
+                .use { reader -> return JsonParser().parse(reader) }
     }
 
     /**
