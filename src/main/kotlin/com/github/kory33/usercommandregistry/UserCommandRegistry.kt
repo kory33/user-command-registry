@@ -5,6 +5,7 @@ import com.github.kory33.chatgui.listener.PlayerChatInterceptor
 import com.github.kory33.chatgui.manager.PlayerInteractiveInterfaceManager
 import com.github.kory33.updatenotificationplugin.bukkit.github.GithubUpdateNotifyPlugin
 import com.github.kory33.usercommandregistry.command.UCRCommandExecutor
+import com.github.kory33.usercommandregistry.data.CommandRegistryManager
 import org.bstats.bukkit.Metrics
 import org.bukkit.event.HandlerList
 
@@ -20,28 +21,30 @@ class UserCommandRegistry : GithubUpdateNotifyPlugin() {
     var runnableInvoker: RunnableInvoker? = null
         private set
 
-    override fun getGithubRepository() = "kory33/user-command-registry"
+    var commandRegistryManager: CommandRegistryManager? = null
+        private set
 
-    private fun enableMetrics() {
-        var metrics = Metrics(this)
+    var metrics: Metrics ?= null
+        private set
+
+    private fun getMetricsInstance() : Metrics {
+        val metrics = Metrics(this)
+
+        return metrics
     }
 
+    override fun getGithubRepository() = "kory33/user-command-registry"
+
     override fun onEnable() {
-        // setup runnable invoker
-        if (this.runnableInvoker == null) {
-            this.runnableInvoker = RunnableInvoker.getRegisteredInstance(this, COMMAND_STRING)
-        }
-
-        // setup player interface manager
-        if (this.interfaceManager == null) {
-            this.interfaceManager = PlayerInteractiveInterfaceManager()
-        }
-
-        getCommand(COMMAND_STRING).executor = UCRCommandExecutor(this)
+        runnableInvoker = runnableInvoker ?: RunnableInvoker.getRegisteredInstance(this, COMMAND_STRING)
+        interfaceManager = interfaceManager ?: PlayerInteractiveInterfaceManager()
+        commandRegistryManager = commandRegistryManager ?: CommandRegistryManager(this)
 
         this.chatInterceptor = PlayerChatInterceptor(this)
 
-        enableMetrics()
+        getCommand(COMMAND_STRING).executor = UCRCommandExecutor(this)
+
+        metrics = metrics ?: getMetricsInstance()
     }
 
     override fun onDisable() {
