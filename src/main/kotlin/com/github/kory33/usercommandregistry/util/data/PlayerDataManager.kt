@@ -1,6 +1,5 @@
-package com.github.kory33.usercommandregistry.data
+package com.github.kory33.usercommandregistry.util.data
 
-import com.github.kory33.usercommandregistry.json.PlayerDataFactory
 import com.github.kory33.usercommandregistry.util.FileUtil
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener

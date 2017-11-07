@@ -1,6 +1,7 @@
 package com.github.kory33.usercommandregistry.data
 
-import com.github.kory33.usercommandregistry.json.PlayerDataFactory
+import com.github.kory33.usercommandregistry.util.data.PlayerDataFactory
+import com.github.kory33.usercommandregistry.util.data.PlayerDataManager
 import com.google.gson.JsonElement
 import org.bukkit.plugin.java.JavaPlugin
 

@@ -1,4 +1,4 @@
-package com.github.kory33.usercommandregistry.json
+package com.github.kory33.usercommandregistry.util.data
 
 import com.google.gson.JsonElement
 
