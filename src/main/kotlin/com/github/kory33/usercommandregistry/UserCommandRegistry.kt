@@ -6,8 +6,10 @@ import com.github.kory33.chatgui.manager.PlayerInteractiveInterfaceManager
 import com.github.kory33.updatenotificationplugin.bukkit.github.GithubUpdateNotifyPlugin
 import com.github.kory33.usercommandregistry.command.UCRCommandExecutor
 import com.github.kory33.usercommandregistry.data.CommandRegistryManager
+import com.github.kory33.usercommandregistry.util.config.LocaleConfig
 import org.bstats.bukkit.Metrics
 import org.bukkit.event.HandlerList
+import java.io.File
 
 const val COMMAND_STRING = "ucr"
 
@@ -24,7 +26,10 @@ class UserCommandRegistry : GithubUpdateNotifyPlugin() {
     var commandRegistryManager: CommandRegistryManager? = null
         private set
 
-    var metrics: Metrics ?= null
+    var metrics: Metrics? = null
+        private set
+
+    lateinit var locale: LocaleConfig
         private set
 
     private fun getMetricsInstance() : Metrics {
@@ -33,14 +38,24 @@ class UserCommandRegistry : GithubUpdateNotifyPlugin() {
         return metrics
     }
 
+    private fun getLocaleConfiguration(): LocaleConfig {
+        val localeConfigFile = File(this.dataFolder, "locale.json")
+        if (!localeConfigFile.exists()) {
+            this.saveResource("locale.json", false)
+        }
+
+        return LocaleConfig(localeConfigFile)
+    }
+
     override fun getGithubRepository() = "kory33/user-command-registry"
 
     override fun onEnable() {
+        locale = getLocaleConfiguration()
+
         runnableInvoker = runnableInvoker ?: RunnableInvoker.getRegisteredInstance(this, COMMAND_STRING)
         interfaceManager = interfaceManager ?: PlayerInteractiveInterfaceManager()
         commandRegistryManager = commandRegistryManager ?: CommandRegistryManager(this)
-
-        this.chatInterceptor = PlayerChatInterceptor(this)
+        chatInterceptor = chatInterceptor ?: PlayerChatInterceptor(this)
 
         getCommand(COMMAND_STRING).executor = UCRCommandExecutor(this)
 
