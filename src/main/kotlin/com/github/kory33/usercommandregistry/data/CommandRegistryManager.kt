@@ -1,8 +1,8 @@
 package com.github.kory33.usercommandregistry.data
 
-import com.github.kory33.usercommandregistry.UserCommandRegistry
 import com.github.kory33.usercommandregistry.json.PlayerDataFactory
 import com.google.gson.JsonElement
+import org.bukkit.plugin.java.JavaPlugin
 
 object CommandRegistryFactory: PlayerDataFactory<CommandRegistry> {
     override fun serialize(obj: CommandRegistry) = obj.toJsonArray()
@@ -10,8 +10,6 @@ object CommandRegistryFactory: PlayerDataFactory<CommandRegistry> {
     override fun constructEmptyData() = CommandRegistry()
 }
 
-class CommandRegistryManager(plugin: UserCommandRegistry)
-    : PlayerDataManager<CommandRegistry>(plugin, CommandRegistryFactory) {
-
+class CommandRegistryManager(plugin: JavaPlugin) : PlayerDataManager<CommandRegistry>(plugin, CommandRegistryFactory) {
     override val folderName = "aliases"
 }
