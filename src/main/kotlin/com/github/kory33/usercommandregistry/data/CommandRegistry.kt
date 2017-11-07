@@ -3,7 +3,7 @@ package com.github.kory33.usercommandregistry.data
 import com.google.gson.JsonArray
 
 class CommandRegistry() {
-    private val aliasSet: MutableSet<CommandAlias> = HashSet()
+    private val aliasSet: HashSet<CommandAlias> = HashSet()
 
     constructor(array: JsonArray) : this() {
         array.map {
