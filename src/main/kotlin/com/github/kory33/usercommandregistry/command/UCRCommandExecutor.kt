@@ -8,11 +8,11 @@ import org.bukkit.command.Command
 import org.bukkit.command.CommandExecutor
 import org.bukkit.command.CommandSender
 
-class UCRCommandExecutor(val plugin : UserCommandRegistry) : CommandExecutor {
+class UCRCommandExecutor(plugin : UserCommandRegistry) : CommandExecutor {
     private val executorMap = mutableMapOf(
-            Pair("register", RegisterExecutor()),
-            Pair("exec", ExecExecutor()),
-            Pair("help", HelpExecutor())
+            Pair("register", RegisterExecutor(plugin)),
+            Pair("exec", ExecExecutor(plugin)),
+            Pair("help", HelpExecutor(plugin))
     )
 
     init {
