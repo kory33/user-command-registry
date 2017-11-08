@@ -1,6 +1,6 @@
 package com.github.kory33.usercommandregistry.util.config
 
-import com.github.kory33.usercommandregistry.util.FileUtil
+import com.github.kory33.usercommandregistry.util.readAsJson
 import org.bukkit.Bukkit
 import java.io.File
 import java.text.MessageFormat
@@ -12,7 +12,7 @@ import java.util.logging.Level
  * @param configFile File from which json object is read.
  */
 class LocaleConfig(configFile: File) {
-    private val configJsonObject = FileUtil.readJson(configFile).asJsonObject
+    private val configJsonObject = configFile.readAsJson().asJsonObject
 
     private fun fetchStringElement(chainedKey: String, delimiter: String = "."): String? {
         val targetElement = chainedKey

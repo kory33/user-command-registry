@@ -1,6 +1,7 @@
 package com.github.kory33.usercommandregistry.util.data
 
-import com.github.kory33.usercommandregistry.util.FileUtil
+import com.github.kory33.usercommandregistry.util.readAsJson
+import com.github.kory33.usercommandregistry.util.writeJson
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
 import org.bukkit.event.player.PlayerJoinEvent
@@ -40,11 +41,12 @@ abstract class PlayerDataManager<out T> protected constructor(internal val plugi
 
     private fun savePlayerDataSync(playerUuid: UUID) {
         val playerData = playerDataMap[playerUuid] ?: return
-        val dataJson = factory.serialize(playerData)
-        FileUtil.writeJson(getPlayerDataTargetFile(playerUuid), dataJson)
+
+        val serializedData = factory.serialize(playerData)
+        getPlayerDataTargetFile(playerUuid).writeJson(serializedData)
     }
 
-    private fun loadPlayerDataSync(playerUuid: UUID) = FileUtil.readJson(getPlayerDataTargetFile(playerUuid))
+    private fun loadPlayerDataSync(playerUuid: UUID) = getPlayerDataTargetFile(playerUuid).readAsJson()
 
     /**
      * Get the player data which has been loaded.

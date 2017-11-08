@@ -14,76 +14,30 @@ import java.nio.file.attribute.BasicFileAttributes
 private val fileFormat = Charset.forName("utf-8")
 
 /**
- * An util class which handles file I/O
+ * Write json data to the given target file
+ * @param targetFile target file to which json data should be written.
+ *                   File may not exist at the time of method invocation, but should not be a directory.
+ *
+ * @param jsonObject a source json object
  */
-object FileUtil {
-    /**
-     * delete folder and its content recursively.
-     * @param targetDirectory directory to be deleted
-     */
-    fun deleteFolderRecursively(targetDirectory: File) {
-        try {
-            Files.walkFileTree(targetDirectory.toPath(), object : SimpleFileVisitor<Path>() {
-                override fun visitFile(file: Path, attrs: BasicFileAttributes): FileVisitResult {
-                    Files.delete(file)
-                    return FileVisitResult.CONTINUE
-                }
-
-                override fun postVisitDirectory(dir: Path, exc: IOException?): FileVisitResult {
-                    if (exc != null) {
-                        throw exc
-                    }
-                    Files.delete(dir)
-                    return FileVisitResult.CONTINUE
-                }
-            })
-        } catch (e: IOException) {
-            println("Error occurred while browsing files under " + targetDirectory.toString() + ": " + e.toString())
-        }
-
-    }
-
-    /**
-     * Write json data to the given target file
-     * @param targetFile target file to which json data should be written.
-     *                   File may not exist at the time of method invocation, but should not be a directory.
-     *
-     * @param jsonObject a source json object
-     */
-    fun writeJson(targetFile: File, jsonObject: JsonElement) {
-        if (!targetFile.exists()) {
-            val parent = targetFile.parentFile
-            if (!parent.exists() && !parent.mkdirs()) {
-                throw IOException("Failed to create target directory!")
-            }
-        }
-
-        Files.newOutputStream(targetFile.toPath()).use { oStream ->
-            val writeData = jsonObject.toString().toByteArray(fileFormat)
-            oStream.write(writeData)
+fun File.writeJson(jsonObject: JsonElement) {
+    if (!this.exists()) {
+        val parent = this.parentFile
+        if (!parent.exists() && !parent.mkdirs()) {
+            throw IOException("Failed to create target directory!")
         }
     }
 
-    /**
-     * Read json data from the given target file
-     */
-    fun readJson(targetFile: File): JsonElement {
-        Files.newBufferedReader(targetFile.toPath(), fileFormat)
-                .use { reader -> return JsonParser().parse(reader) }
+    Files.newOutputStream(this.toPath()).use { oStream ->
+        val writeData = jsonObject.toString().toByteArray(fileFormat)
+        oStream.write(writeData)
     }
+}
 
-    /**
-     * Get the name of the file with it's extension removed.
-     * @param file target file
-     *
-     * @return file name without the extension
-     */
-    fun getFileBaseName(file: File): String {
-        val fileName = file.name
-        val lastIndexOfDot = fileName.lastIndexOf(".")
-        if (lastIndexOfDot == 0) {
-            return fileName
-        }
-        return fileName.substring(0, lastIndexOfDot)
-    }
+/**
+ * Read json data from the given target file
+ */
+fun File.readAsJson(): JsonElement {
+    Files.newBufferedReader(this.toPath(), fileFormat)
+            .use { reader -> return JsonParser().parse(reader) }
 }
