@@ -62,14 +62,10 @@ class UserCommandRegistry : GithubUpdateNotifyPlugin() {
     }
 
     override fun onDisable() {
-        if (!this.isEnabled) {
-            return
-        }
-
         autoSaver?.stopAutoSaveTask()
         autoSaver = null
 
-        commandRegistryManager!!.saveAllPlayerDataSync()
+        commandRegistryManager?.saveAllPlayerDataSync()
 
         HandlerList.unregisterAll(this)
     }
