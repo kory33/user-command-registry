@@ -4,6 +4,7 @@ import com.github.kory33.usercommandregistry.UserCommandRegistry
 import com.github.kory33.usercommandregistry.command.subcommand.ExecExecutor
 import com.github.kory33.usercommandregistry.command.subcommand.HelpExecutor
 import com.github.kory33.usercommandregistry.command.subcommand.RegisterExecutor
+import com.github.kory33.usercommandregistry.command.subcommand.ReloadExecutor
 import org.bukkit.command.Command
 import org.bukkit.command.CommandExecutor
 import org.bukkit.command.CommandSender
@@ -12,7 +13,8 @@ class UCRCommandExecutor(plugin : UserCommandRegistry) : CommandExecutor {
     private val executorMap = mutableMapOf(
             Pair("register", RegisterExecutor(plugin)),
             Pair("exec", ExecExecutor(plugin)),
-            Pair("help", HelpExecutor(plugin))
+            Pair("help", HelpExecutor(plugin)),
+            Pair("reload", ReloadExecutor(plugin))
     )
 
     init {
