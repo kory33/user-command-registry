@@ -14,10 +14,7 @@ import java.nio.file.attribute.BasicFileAttributes
 private val fileFormat = Charset.forName("utf-8")
 
 /**
- * Write json data to the given target file
- * @param targetFile target file to which json data should be written.
- *                   File may not exist at the time of method invocation, but should not be a directory.
- *
+ * Write json data to the file
  * @param jsonObject a source json object
  */
 fun File.writeJson(jsonObject: JsonElement) {
@@ -35,7 +32,7 @@ fun File.writeJson(jsonObject: JsonElement) {
 }
 
 /**
- * Read json data from the given target file
+ * Read json data from the file
  */
 fun File.readAsJson(): JsonElement {
     Files.newBufferedReader(this.toPath(), fileFormat)
