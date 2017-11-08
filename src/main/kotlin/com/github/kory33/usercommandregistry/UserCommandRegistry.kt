@@ -67,6 +67,8 @@ class UserCommandRegistry : GithubUpdateNotifyPlugin() {
             return
         }
 
+        commandRegistryManager!!.saveAllPlayerDataSync()
+
         HandlerList.unregisterAll(this)
     }
 
