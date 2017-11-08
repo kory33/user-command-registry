@@ -21,7 +21,7 @@ class ExecExecutor(private val plugin: UserCommandRegistry) : SubCommandExecutor
         }
 
         if (!player.hasPermission(UCRPermissions.EXEC)) {
-            SimpleMessageUI(plugin.locale.getString("permission.missing"), plugin.locale)
+            SimpleMessageUI(plugin.locale.getString("permission.missing"), plugin.locale).send(player)
             return true
         }
 

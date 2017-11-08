@@ -22,7 +22,7 @@ class RegisterExecutor(private val plugin: UserCommandRegistry) : SubCommandExec
         }
 
         if (!player.hasPermission(UCRPermissions.REGISTER)) {
-            SimpleMessageUI(plugin.locale.getString("permission.missing"), plugin.locale)
+            SimpleMessageUI(plugin.locale.getString("permission.missing"), plugin.locale).send(player)
             return true
         }
 
@@ -42,7 +42,7 @@ class RegisterExecutor(private val plugin: UserCommandRegistry) : SubCommandExec
 
         val completionMessage
                 = locale.getFormatted("ui.message.register.registered", alias.aliasString, alias.targetCommand)
-        SimpleMessageUI(completionMessage, locale)
+        SimpleMessageUI(completionMessage, locale).send(player)
 
         return true
     }
