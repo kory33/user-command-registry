@@ -8,7 +8,8 @@ import org.bukkit.command.CommandSender
 import org.bukkit.entity.Player
 
 class ReloadExecutor(private val plugin: UserCommandRegistry) : SubCommandExecutor {
-    override val helpString = plugin.locale.getString("help.sub_command.reload")
+    override val helpString
+            get() = plugin.locale.getString("help.sub_command.reload")
 
     override fun onCommand(sender: CommandSender, command: Command, args: List<String>): Boolean {
         val player = sender as? Player

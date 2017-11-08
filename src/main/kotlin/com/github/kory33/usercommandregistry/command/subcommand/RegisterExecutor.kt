@@ -9,7 +9,8 @@ import org.bukkit.command.CommandSender
 import org.bukkit.entity.Player
 
 class RegisterExecutor(private val plugin: UserCommandRegistry) : SubCommandExecutor {
-    override val helpString = plugin.locale.getString("help.sub_command.register")
+    override val helpString
+            get() = plugin.locale.getString("help.sub_command.register")
 
     override fun onCommand(sender: CommandSender, command: Command, args: List<String>): Boolean {
         val locale = plugin.locale
