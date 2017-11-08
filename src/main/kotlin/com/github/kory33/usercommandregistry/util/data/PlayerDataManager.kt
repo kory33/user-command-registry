@@ -10,6 +10,8 @@ import org.bukkit.plugin.java.JavaPlugin
 import java.io.IOException
 import java.util.*
 import java.util.concurrent.CompletableFuture
+import java.util.concurrent.Executors
+import java.util.function.Supplier
 
 /**
  * Class that manages player data instances associated with logged-in players.
@@ -26,6 +28,7 @@ abstract class PlayerDataManager<out T> protected constructor(internal val plugi
                                                               private val folderName: String,
                                                               private val factory: PlayerDataFactory<T>) : Listener {
 
+    private val fileRWExecutor = Executors.newFixedThreadPool(1)
     private val saveTargetDirectory = plugin.dataFolder.resolve(folderName)
     private val playerDataMap = HashMap<UUID, T>()
 
@@ -69,9 +72,10 @@ abstract class PlayerDataManager<out T> protected constructor(internal val plugi
     fun onPlayerJoin(event: PlayerJoinEvent) {
         val playerUuid = event.player.uniqueId
 
-        CompletableFuture.supplyAsync {
-            factory.deserialize(loadPlayerDataSync(playerUuid))
-        }.exceptionally {
+        CompletableFuture.supplyAsync(Supplier {
+            val loadedData = loadPlayerDataSync(playerUuid)
+            factory.deserialize(loadedData)
+        }, fileRWExecutor).exceptionally {
             factory.constructEmptyData()
         }.thenAccept {
             playerDataMap.put(playerUuid, it)
@@ -80,9 +84,9 @@ abstract class PlayerDataManager<out T> protected constructor(internal val plugi
 
     @EventHandler
     fun onPlayerQuit(event: PlayerQuitEvent) {
-        CompletableFuture.runAsync {
+        CompletableFuture.runAsync(Runnable {
             savePlayerDataSync(event.player.uniqueId)
-        }.thenRun {
+        }, fileRWExecutor).thenRun {
             playerDataMap.remove(event.player.uniqueId)
         }
     }
