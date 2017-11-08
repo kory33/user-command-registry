@@ -10,7 +10,10 @@ commands:
 permissions:
   ucr.exec:
     description: allows a player to execute an alias
+    default: true
   ucr.register:
     description: allows a player to register an alias
+    default: true
   ucr.reload:
     description: allows a player to reload the plugin
+    default: op

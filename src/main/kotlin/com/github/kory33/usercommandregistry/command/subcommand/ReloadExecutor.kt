@@ -15,7 +15,7 @@ class ReloadExecutor(private val plugin: UserCommandRegistry) : SubCommandExecut
         val player = sender as? Player
         val hasEnoughPermission = player?.hasPermission(UCRPermissions.RELOAD) ?: true
 
-        if (hasEnoughPermission) {
+        if (!hasEnoughPermission) {
             SimpleMessageUI(plugin.locale.getString("permission.missing"), plugin.locale).send(sender)
             return true
         }
