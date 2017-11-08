@@ -1,0 +1,16 @@
+name: "@project.name@"
+version: "@project.version@"
+main: com.github.kory33.usercommandregistry.UserCommandRegistry
+
+commands:
+  ucr:
+    usage: /ucr
+    description: displays help message
+
+permissions:
+  ucr.exec:
+    description: allows a player to execute an alias
+  ucr.register:
+    description: allows a player to register an alias
+  ucr.reload:
+    description: allows a player to reload the plugin
