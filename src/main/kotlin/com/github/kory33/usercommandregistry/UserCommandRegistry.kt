@@ -5,8 +5,10 @@ import com.github.kory33.chatgui.listener.PlayerChatInterceptor
 import com.github.kory33.chatgui.manager.PlayerInteractiveInterfaceManager
 import com.github.kory33.updatenotificationplugin.bukkit.github.GithubUpdateNotifyPlugin
 import com.github.kory33.usercommandregistry.command.UCRCommandExecutor
+import com.github.kory33.usercommandregistry.data.CommandRegistry
 import com.github.kory33.usercommandregistry.data.CommandRegistryManager
 import com.github.kory33.usercommandregistry.util.config.LocaleConfig
+import com.github.kory33.usercommandregistry.util.data.PlayerDataAutoSaver
 import org.bstats.bukkit.Metrics
 import org.bukkit.event.HandlerList
 import java.io.File
@@ -14,20 +16,15 @@ import java.io.File
 const val COMMAND_STRING = "ucr"
 
 class UserCommandRegistry : GithubUpdateNotifyPlugin() {
-    var chatInterceptor: PlayerChatInterceptor? = null
-        private set
-
-    var interfaceManager : PlayerInteractiveInterfaceManager? = null
-        private set
-
-    var runnableInvoker: RunnableInvoker? = null
-        private set
+    private var chatInterceptor: PlayerChatInterceptor? = null
+    private var interfaceManager : PlayerInteractiveInterfaceManager? = null
+    private var runnableInvoker: RunnableInvoker? = null
+    private var metrics: Metrics? = null
 
     var commandRegistryManager: CommandRegistryManager? = null
         private set
 
-    var metrics: Metrics? = null
-        private set
+    var autoSaver: PlayerDataAutoSaver<CommandRegistry>? = null
 
     lateinit var locale: LocaleConfig
         private set
@@ -57,6 +54,8 @@ class UserCommandRegistry : GithubUpdateNotifyPlugin() {
         commandRegistryManager = commandRegistryManager ?: CommandRegistryManager(this)
         chatInterceptor = chatInterceptor ?: PlayerChatInterceptor(this)
 
+        autoSaver = PlayerDataAutoSaver(commandRegistryManager!!, 20 * 60 * 5, true)
+
         getCommand(COMMAND_STRING).executor = UCRCommandExecutor(this)
 
         metrics = metrics ?: getMetricsInstance()
@@ -66,6 +65,9 @@ class UserCommandRegistry : GithubUpdateNotifyPlugin() {
         if (!this.isEnabled) {
             return
         }
+
+        autoSaver?.stopAutoSaveTask()
+        autoSaver = null
 
         commandRegistryManager!!.saveAllPlayerDataSync()
 

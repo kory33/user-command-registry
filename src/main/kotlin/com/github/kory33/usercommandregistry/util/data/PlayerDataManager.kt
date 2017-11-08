@@ -21,7 +21,7 @@ import java.util.concurrent.CompletableFuture
  * @param folderName The name of the folder which the data is read from or written to
  * @param factory factory class to read and write json to the data folder
  */
-abstract class PlayerDataManager<out T> protected constructor(plugin: JavaPlugin,
+abstract class PlayerDataManager<out T> protected constructor(internal val plugin: JavaPlugin,
                                                               private val folderName: String,
                                                               private val factory: PlayerDataFactory<T>) : Listener {
 
