@@ -11,6 +11,5 @@ object CommandRegistryFactory: PlayerDataFactory<CommandRegistry> {
     override fun constructEmptyData() = CommandRegistry()
 }
 
-class CommandRegistryManager(plugin: JavaPlugin) : PlayerDataManager<CommandRegistry>(plugin, CommandRegistryFactory) {
-    override val folderName = "aliases"
-}
+class CommandRegistryManager(plugin: JavaPlugin)
+    : PlayerDataManager<CommandRegistry>(plugin,"aliases", CommandRegistryFactory)

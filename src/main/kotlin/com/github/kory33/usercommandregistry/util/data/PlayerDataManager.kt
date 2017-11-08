@@ -17,14 +17,13 @@ import java.util.concurrent.CompletableFuture
  * it is possible that the data has not been loaded for a few ticks after the player join.
  *
  * @param T type of the player-related data
+ * @param plugin plugin from which data is read
+ * @param folderName The name of the folder which the data is read from or written to
+ * @param factory factory class to read and write json to the data folder
  */
 abstract class PlayerDataManager<out T> protected constructor(plugin: JavaPlugin,
+                                                              private val folderName: String,
                                                               private val factory: PlayerDataFactory<T>) : Listener {
-    /**
-     * The name of the folder which the data is read from or written to.
-     * The implementation of this field should be a constant.
-     */
-    protected abstract val folderName: String
 
     private val saveTargetDirectory = plugin.dataFolder.resolve(folderName)
     private val playerDataMap = HashMap<UUID, T>()
