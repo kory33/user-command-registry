@@ -24,7 +24,7 @@ abstract class PlayerDataManager<out T> protected constructor(plugin: JavaPlugin
      * The name of the folder which the data is read from or written to.
      * The implementation of this field should be a constant.
      */
-    abstract val folderName: String
+    protected abstract val folderName: String
 
     private val saveTargetDirectory = plugin.dataFolder.resolve(folderName)
     private val playerDataMap = HashMap<UUID, T>()
