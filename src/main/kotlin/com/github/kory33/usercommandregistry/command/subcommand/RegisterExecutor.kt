@@ -1,5 +1,6 @@
 package com.github.kory33.usercommandregistry.command.subcommand
 
+import com.github.kory33.usercommandregistry.UCRPermissions
 import com.github.kory33.usercommandregistry.UserCommandRegistry
 import com.github.kory33.usercommandregistry.data.CommandAlias
 import com.github.kory33.usercommandregistry.ui.SimpleMessageUI
@@ -16,6 +17,11 @@ class RegisterExecutor(private val plugin: UserCommandRegistry) : SubCommandExec
 
         if (player == null) {
             SimpleMessageUI(locale.getString("ui.message.player_only"), locale).send(sender)
+            return true
+        }
+
+        if (!player.hasPermission(UCRPermissions.REGISTER)) {
+            SimpleMessageUI(plugin.locale.getString("permission.missing"), plugin.locale)
             return true
         }
 

@@ -1,5 +1,6 @@
 package com.github.kory33.usercommandregistry.command.subcommand
 
+import com.github.kory33.usercommandregistry.UCRPermissions
 import com.github.kory33.usercommandregistry.UserCommandRegistry
 import com.github.kory33.usercommandregistry.ui.SimpleMessageUI
 import org.bukkit.command.Command
@@ -15,6 +16,11 @@ class ExecExecutor(private val plugin: UserCommandRegistry) : SubCommandExecutor
 
         if (player == null) {
             SimpleMessageUI(locale.getString("ui.message.player_only"), locale).send(sender)
+            return true
+        }
+
+        if (!player.hasPermission(UCRPermissions.EXEC)) {
+            SimpleMessageUI(plugin.locale.getString("permission.missing"), plugin.locale)
             return true
         }
 
