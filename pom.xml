@@ -139,6 +139,10 @@
                                     <pattern>org.bstats</pattern>
                                     <shadedPattern>com.github.kory33.usercommandregistry.metrics</shadedPattern>
                                 </relocation>
+                                <relocation>
+                                    <pattern>com.github.kory33.chatgui</pattern>
+                                    <shadedPattern>com.github.kory33.usercommandregistry.chatgui</shadedPattern>
+                                </relocation>
                             </relocations>
                         </configuration>
                     </execution>
