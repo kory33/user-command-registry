@@ -38,7 +38,7 @@ object FileUtil {
                 }
             })
         } catch (e: IOException) {
-            println("Error occured while browsing files under " + targetDirectory.toString() + ": " + e.toString())
+            println("Error occurred while browsing files under " + targetDirectory.toString() + ": " + e.toString())
         }
 
     }

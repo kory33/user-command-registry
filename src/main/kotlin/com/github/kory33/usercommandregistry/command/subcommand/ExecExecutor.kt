@@ -2,7 +2,6 @@ package com.github.kory33.usercommandregistry.command.subcommand
 
 import com.github.kory33.usercommandregistry.UserCommandRegistry
 import com.github.kory33.usercommandregistry.ui.SimpleMessageUI
-import org.bukkit.ChatColor
 import org.bukkit.command.Command
 import org.bukkit.command.CommandSender
 import org.bukkit.entity.Player
