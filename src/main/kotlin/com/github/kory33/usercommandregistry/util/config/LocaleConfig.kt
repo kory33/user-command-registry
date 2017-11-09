@@ -1,6 +1,7 @@
 package com.github.kory33.usercommandregistry.util.config
 
 import com.github.kory33.usercommandregistry.util.readAsJson
+import com.google.gson.JsonElement
 import org.bukkit.Bukkit
 import java.io.File
 import java.text.MessageFormat
@@ -14,13 +15,11 @@ import java.util.logging.Level
 class LocaleConfig(configFile: File) {
     private val configJsonObject = configFile.readAsJson().asJsonObject
 
-    private fun fetchStringElement(chainedKey: String, delimiter: String = "."): String? {
-        val targetElement = chainedKey
-                .split(delimiter)
-                .foldRight(configJsonObject, { key, obj -> obj?.getAsJsonObject(key) })
-
-        return targetElement?.asString
-    }
+    private fun fetchStringElement(chainedKey: String, delimiter: String = ".") = chainedKey
+            .split(delimiter)
+            .asReversed()
+            .foldRight(configJsonObject, { key, obj: JsonElement? -> obj?.asJsonObject?.get(key) })
+            ?.asString
 
     /**
      * Get the string data with the specified json key.
@@ -31,12 +30,12 @@ class LocaleConfig(configFile: File) {
      */
     fun getString(jsonKey: String): String {
         val result = fetchStringElement(jsonKey)
-        if (result != null) {
-            return result
+
+        if (result == null) {
+            Bukkit.getLogger().log(Level.WARNING, "Failed to fetch the massage at $jsonKey. Using this key instead.")
         }
 
-        Bukkit.getLogger().log(Level.WARNING, "Failed to fetch the massage at $jsonKey. Using this key instead.")
-        return jsonKey
+        return result ?: jsonKey
     }
 
     /**
