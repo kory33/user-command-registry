@@ -15,11 +15,10 @@ import java.util.logging.Level
 class LocaleConfig(configFile: File) {
     private val configJsonObject = configFile.readAsJson().asJsonObject
 
-    private fun fetchStringElement(chainedKey: String, delimiter: String = ".") = chainedKey
+    private fun fetchTargetElement(chainedKey: String, delimiter: String = ".") = chainedKey
             .split(delimiter)
             .asReversed()
             .foldRight(configJsonObject, { key, obj: JsonElement? -> obj?.asJsonObject?.get(key) })
-            ?.asString
 
     /**
      * Get the string data with the specified json key.
@@ -29,13 +28,34 @@ class LocaleConfig(configFile: File) {
      * otherwise the key itself(warning will be logged in this case)
      */
     operator fun get(jsonKey: String): String {
-        val result = fetchStringElement(jsonKey)
+        val result = try {
+            fetchTargetElement(jsonKey)?.asString
+        } catch (_: Exception) {
+            null
+        }
 
         if (result == null) {
             Bukkit.getLogger().log(Level.WARNING, "Failed to fetch the massage at $jsonKey. Using this key instead.")
         }
 
         return result ?: jsonKey
+    }
+
+    fun getAsStringList(jsonKey: String): List<String> {
+        val result = try {
+            fetchTargetElement(jsonKey)
+                    ?.asJsonArray
+                    ?.filter { it.isJsonPrimitive }
+                    ?.map { it.asString }
+        } catch (_: Exception) {
+            null
+        }
+
+        if (result == null) {
+            Bukkit.getLogger().log(Level.WARNING, "Failed to fetch the massage at $jsonKey. Using a list with this key.")
+        }
+
+        return result ?: ArrayList()
     }
 
     /**
