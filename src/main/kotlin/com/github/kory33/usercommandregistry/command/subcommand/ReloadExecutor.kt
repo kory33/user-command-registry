@@ -9,20 +9,20 @@ import org.bukkit.entity.Player
 
 class ReloadExecutor(private val plugin: UserCommandRegistry) : SubCommandExecutor {
     override val helpString
-            get() = plugin.locale.getString("help.sub_command.reload")
+            get() = plugin.locale["help.sub_command.reload"]
 
     override fun onCommand(sender: CommandSender, command: Command, args: List<String>): Boolean {
         val player = sender as? Player
         val hasEnoughPermission = player?.hasPermission(UCRPermissions.RELOAD) ?: true
 
         if (!hasEnoughPermission) {
-            SimpleMessageUI(plugin.locale.getString("permission.missing"), plugin.locale).send(sender)
+            SimpleMessageUI(plugin.locale["permission.missing"], plugin.locale).send(sender)
             return true
         }
 
-        sender.sendMessage(plugin.locale.getString("ui.message.reload.start"))
+        sender.sendMessage(plugin.locale["ui.message.reload.start"])
         plugin.reload()
-        sender.sendMessage(plugin.locale.getString("ui.message.reload.complete"))
+        sender.sendMessage(plugin.locale["ui.message.reload.complete"])
 
         return true
     }

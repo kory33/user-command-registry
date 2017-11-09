@@ -28,7 +28,7 @@ class LocaleConfig(configFile: File) {
      * @return String if found at the given key location,
      * otherwise the key itself(warning will be logged in this case)
      */
-    fun getString(jsonKey: String): String {
+    operator fun get(jsonKey: String): String {
         val result = fetchStringElement(jsonKey)
 
         if (result == null) {
@@ -45,6 +45,6 @@ class LocaleConfig(configFile: File) {
      * @return string at the location of key, formatted with several objects
      */
     fun getFormatted(jsonKey: String, vararg arguments: Any): String {
-        return MessageFormat.format(this.getString(jsonKey), *arguments)
+        return MessageFormat.format(this[jsonKey], *arguments)
     }
 }

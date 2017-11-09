@@ -24,7 +24,7 @@ class UserCommandRegistry : GithubUpdateNotifyPlugin() {
     var commandRegistryManager: CommandRegistryManager? = null
         private set
 
-    var autoSaver: PlayerDataAutoSaver<CommandRegistry>? = null
+    private var autoSaver: PlayerDataAutoSaver<CommandRegistry>? = null
 
     lateinit var locale: LocaleConfig
         private set

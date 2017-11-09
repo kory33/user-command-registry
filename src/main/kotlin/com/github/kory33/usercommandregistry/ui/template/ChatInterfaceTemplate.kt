@@ -10,9 +10,9 @@ abstract class ChatInterfaceTemplate(protected val locale: LocaleConfig) : IChat
     override fun constructInterfaceMessages(): MessagePartsList {
         val list = MessagePartsList()
 
-        list.addLine(locale.getString("ui.template.header"))
+        list.addLine(locale["ui.template.header"])
         list.addAll(constructBodyMassage())
-        list.add(locale.getString("ui.template.footer"))
+        list.add(locale["ui.template.footer"])
 
         return list
     }

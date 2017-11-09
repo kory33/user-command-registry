@@ -10,19 +10,19 @@ import org.bukkit.entity.Player
 
 class RegisterExecutor(private val plugin: UserCommandRegistry) : SubCommandExecutor {
     override val helpString
-            get() = plugin.locale.getString("help.sub_command.register")
+            get() = plugin.locale["help.sub_command.register"]
 
     override fun onCommand(sender: CommandSender, command: Command, args: List<String>): Boolean {
         val locale = plugin.locale
         val player = sender as? Player
 
         if (player == null) {
-            SimpleMessageUI(locale.getString("ui.message.player_only"), locale).send(sender)
+            SimpleMessageUI(locale["ui.message.player_only"], locale).send(sender)
             return true
         }
 
         if (!player.hasPermission(UCRPermissions.REGISTER)) {
-            SimpleMessageUI(plugin.locale.getString("permission.missing"), plugin.locale).send(player)
+            SimpleMessageUI(plugin.locale["permission.missing"], plugin.locale).send(player)
             return true
         }
 
@@ -32,7 +32,7 @@ class RegisterExecutor(private val plugin: UserCommandRegistry) : SubCommandExec
 
         val registry = plugin.commandRegistryManager!!.getLoadedPlayerData(player.uniqueId)
         if (registry == null) {
-            SimpleMessageUI(locale.getString("ui.message.data_loading"), locale).send(player)
+            SimpleMessageUI(locale["ui.message.data_loading"], locale).send(player)
             return true
         }
 
