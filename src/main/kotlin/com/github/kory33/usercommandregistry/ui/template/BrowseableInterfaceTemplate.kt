@@ -35,5 +35,6 @@ abstract class BrowseableInterfaceTemplate(player: Player,
         return locale.getFormatted("ui.template.browseable.page", currentPageNumber, maxPageNumber)
     }
 
-    override val bodyMassages = super.bodyMessages
+    override val bodyMassages
+        get() = super.bodyMessages
 }
