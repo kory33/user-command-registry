@@ -4,7 +4,7 @@ import com.github.kory33.chatgui.tellraw.MessagePartsList
 import com.github.kory33.usercommandregistry.ui.template.ChatInterfaceTemplate
 import com.github.kory33.usercommandregistry.util.config.LocaleConfig
 
-class SimpleMessageUI(private val message: String, locale: LocaleConfig, private val withLineBreak: Boolean = true)
+class SimpleMessageUI(message: String, locale: LocaleConfig, withLineBreak: Boolean = true)
     : ChatInterfaceTemplate(locale) {
-    override fun constructBodyMassage() = MessagePartsList(message + (if (withLineBreak) "\n" else ""))
+    override val bodyMassages = MessagePartsList(message + (if (withLineBreak) "\n" else ""))
 }

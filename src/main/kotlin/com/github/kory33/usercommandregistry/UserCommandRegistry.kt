@@ -16,9 +16,12 @@ import java.io.File
 const val COMMAND_STRING = "ucr"
 
 class UserCommandRegistry : GithubUpdateNotifyPlugin() {
-    private var chatInterceptor: PlayerChatInterceptor? = null
-    private var interfaceManager : PlayerInteractiveInterfaceManager? = null
-    private var runnableInvoker: RunnableInvoker? = null
+    var chatInterceptor: PlayerChatInterceptor? = null
+        private set
+    var interfaceManager : PlayerInteractiveInterfaceManager? = null
+        private set
+    var runnableInvoker: RunnableInvoker? = null
+        private set
     private var metrics: Metrics? = null
 
     var commandRegistryManager: CommandRegistryManager? = null
