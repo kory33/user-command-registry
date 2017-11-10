@@ -13,17 +13,17 @@ class UCRCommandExecutor(plugin : UserCommandRegistry) : CommandExecutor {
     private val executorMap = mutableMapOf(
             Pair("register", RegisterExecutor(plugin)),
             Pair("exec", ExecExecutor(plugin)),
-            Pair("help", HelpExecutor(plugin)),
             Pair("reload", ReloadExecutor(plugin))
     )
 
     init {
-        val aliasMap = mapOf(
+        executorMap.putAll(mapOf(
                 Pair("r", executorMap["register"]!!),
                 Pair("e", executorMap["exec"]!!)
-        )
+        ))
 
-        executorMap.putAll(aliasMap)
+        val helpExecutor = HelpExecutor(plugin, "help", executorMap)
+        executorMap.put("help", helpExecutor)
     }
 
     private val defaultExecutor = executorMap["help"]!!
