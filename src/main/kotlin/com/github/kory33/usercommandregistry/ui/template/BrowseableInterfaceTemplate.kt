@@ -34,4 +34,6 @@ abstract class BrowseableInterfaceTemplate(player: Player,
     override fun getPageDisplayComponent(currentPageNumber: Int, maxPageNumber: Int): String {
         return locale.getFormatted("ui.template.browseable.page", currentPageNumber, maxPageNumber)
     }
+
+    override val bodyMassages = super.bodyMessages
 }
