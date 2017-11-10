@@ -33,18 +33,18 @@
             "exec" : [
                 "Usage: §6/ucr exec [alias]",
                 "  §7[arg] and <arg> means optional/required respectively.",
+                "  §7required permission : ucr.exec",
                 "",
                 "Executes an aliased command which has been registered",
-                "through §6/ucr register [alias] [command] <arg1 <arg2 <...>>>",
-                ""
+                "through §6/ucr register [alias] [command] <arg1 <arg2 <...>>>\n"
             ],
             "register" : [
                 "Usage: §6/ucr register [alias] [target] <arg1 <arg2 <...>>>",
                 "  §7[arg] and <arg> means optional/required respectively.",
+                "  §7required permission : ucr.register",
                 "",
                 "Registers an §oalias§r for the command §o§6/target arg1 arg2§r.",
                 "Registered command will then be invoked by §6/ucr exec [alias]§r.",
-                "",
                 "For example, running the following command",
                 "",
                 "§6/ucr register opn op Notch",
@@ -54,8 +54,10 @@
             "reload" : [
                 "Usage: §6/ucr reload",
                 "  §7[arg] and <arg> means optional/required respectively.",
+                "  §7required permission : ucr.reload",
                 "",
-                "Reloads the plugin data and locale configuration."
+                "Reloads the plugin data and locale configuration.",
+                ""
             ],
             "help" : [
                 "Available sub-commands:",
