@@ -55,7 +55,7 @@ class LocaleConfig(configFile: File) {
             Bukkit.getLogger().log(Level.WARNING, "Failed to fetch the massage at $jsonKey. Using a list with this key.")
         }
 
-        return result ?: ArrayList()
+        return result ?: arrayListOf(jsonKey)
     }
 
     /**
