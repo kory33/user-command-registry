@@ -7,7 +7,7 @@ import org.bukkit.command.Command
 import org.bukkit.command.CommandSender
 import org.bukkit.entity.Player
 
-class ExecExecutor(private val plugin: UserCommandRegistry) : SubCommandExecutor {
+class ExecExecutor(private val plugin: UserCommandRegistry) : SubCommandExecutor(plugin) {
     /**
      * The server tends to crash itself in the following situation:
      *  - There is an alias of `crash` -> `ucr exec crash`
@@ -23,7 +23,7 @@ class ExecExecutor(private val plugin: UserCommandRegistry) : SubCommandExecutor
     private val executingAlias = HashSet<String>()
 
     override val helpString
-            get() = plugin.locale["help.sub_command.exec"]
+            get() = plugin.locale.getAsStringList("help.sub_command.exec")
 
     override fun onCommand(sender: CommandSender, command: Command, args: List<String>): Boolean {
         val locale = plugin.locale

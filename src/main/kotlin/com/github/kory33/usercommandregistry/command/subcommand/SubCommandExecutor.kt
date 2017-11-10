@@ -1,18 +1,21 @@
 package com.github.kory33.usercommandregistry.command.subcommand
 
+import com.github.kory33.usercommandregistry.UserCommandRegistry
+import com.github.kory33.usercommandregistry.ui.BrowseableMessageUI
 import org.bukkit.command.Command
 import org.bukkit.command.CommandSender
+import org.bukkit.entity.Player
 
 /**
  * Abstraction sub-command executor
  * @author Kory
  */
-interface SubCommandExecutor {
+abstract class SubCommandExecutor(private val plugin: UserCommandRegistry) {
     /**
      * Get a string which includes command usage and description
      * @return string which includes command usage and description
      */
-    val helpString: String
+    abstract val helpString: List<String>
 
     /**
      * This method is invoked when a player or console executes a command.
@@ -22,7 +25,7 @@ interface SubCommandExecutor {
      * @param args list of arguments to be processed (sub-command argument is not included in this list)
      * @return a boolean value, false when the command usage has to be displayed, otherwise true
      */
-    fun onCommand(sender: CommandSender, command: Command, args: List<String>): Boolean
+    abstract fun onCommand(sender: CommandSender, command: Command, args: List<String>): Boolean
 
     /**
      * Send help message to the target.
@@ -31,6 +34,11 @@ interface SubCommandExecutor {
      * @param target target to which the help message is sent
      */
     fun displayHelp(target: CommandSender) {
-        target.sendMessage(this.helpString)
+        if (target !is Player) {
+            target.sendMessage(helpString.joinToString("\n"))
+            return
+        }
+
+        BrowseableMessageUI(target, plugin, this.helpString).send()
     }
 }

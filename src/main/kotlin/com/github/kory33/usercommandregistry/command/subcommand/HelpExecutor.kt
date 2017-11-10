@@ -4,9 +4,9 @@ import com.github.kory33.usercommandregistry.UserCommandRegistry
 import org.bukkit.command.Command
 import org.bukkit.command.CommandSender
 
-class HelpExecutor(private val plugin: UserCommandRegistry) : SubCommandExecutor {
+class HelpExecutor(private val plugin: UserCommandRegistry) : SubCommandExecutor(plugin) {
     override val helpString
-            get() = plugin.locale["help.sub_command.help"]
+        get() = plugin.locale.getAsStringList("help.sub_command.help")
 
     override fun onCommand(sender: CommandSender, command: Command, args: List<String>): Boolean {
         return false
