@@ -57,7 +57,7 @@ class UserCommandRegistry : GithubUpdateNotifyPlugin() {
         commandRegistryManager = commandRegistryManager ?: CommandRegistryManager(this)
         chatInterceptor = chatInterceptor ?: PlayerChatInterceptor(this)
 
-        autoSaver = PlayerDataAutoSaver(commandRegistryManager!!, 20 * 60 * 5, true)
+        autoSaver = PlayerDataAutoSaver(commandRegistryManager!!, 20 * 60 * 5, false)
 
         getCommand(COMMAND_STRING).executor = UCRCommandExecutor(this)
 
