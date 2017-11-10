@@ -13,6 +13,7 @@ abstract class BrowseableInterfaceTemplate(player: Player,
             : this(oldInterface.targetPlayer, oldInterface.plugin, newIndex)
 
     override val interfaceManager = plugin.interfaceManager!!
+    override val requestedPageIndex = pageIndex
 
     private fun getNextButtonColor(isActive: Boolean): String {
         return if (isActive) {
@@ -28,5 +29,9 @@ abstract class BrowseableInterfaceTemplate(player: Player,
 
     override fun getPrevButton(isActive: Boolean): String {
         return "${getNextButtonColor(isActive)}${locale["ui.template.browseable.prev"]}"
+    }
+
+    override fun getPageDisplayComponent(currentPageNumber: Int, maxPageNumber: Int): String {
+        return locale.getFormatted("ui.template.browseable.page", currentPageNumber, maxPageNumber)
     }
 }
