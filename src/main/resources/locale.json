@@ -1,0 +1,81 @@
+{
+    "ui" : {
+        "template" : {
+            "header" : "§b=======§9[UserCommandRegistry]§b=======§r",
+            "footer" : "§7---------------------------------§r",
+            "browseable" : {
+                "prev" : "[<< Prev]§r",
+                "next" : "[Next >>]§r\n",
+                "page" : " §6 {0} / {1} §r ",
+                "active" : "§6§n",
+                "inactive" : "§7"
+            }
+        },
+        "message" : {
+            "register" : {
+                "registered" : "§3Registered an alias: §6{0} §3-> §6{1}"
+            },
+            "reload" : {
+                "start" : "§7Reloading plugin settings...",
+                "complete" : "§aReload complete."
+            },
+            "exec" : {
+                "performing" : "§3Performing command: §6{0}",
+                "target_missing" : "§cAlias not found.",
+                "recursion_detected" : "§4Command recursion detected! Halting further execution..."
+            },
+            "player_only" : "§4This command is only available for players.",
+            "data_loading" : "§6Data is being loaded... Please try again in a few second."
+        }
+    },
+    "help" : {
+        "sub_command" : {
+            "exec" : [
+                "Usage: §6/ucr exec [alias]",
+                "  §7[arg] and <arg> means optional/required respectively.",
+                "",
+                "Executes an aliased command which has been registered",
+                "through §6/ucr register [alias] [command] <arg1 <arg2 <...>>>",
+                ""
+            ],
+            "register" : [
+                "Usage: §6/ucr register [alias] [target] <arg1 <arg2 <...>>>",
+                "  §7[arg] and <arg> means optional/required respectively.",
+                "",
+                "Registers an §oalias§r for the command §o§6/target arg1 arg2§r.",
+                "Registered command will then be invoked by §6/ucr exec [alias]§r.",
+                "",
+                "For example, running the following command",
+                "",
+                "§6/ucr register opn op Notch",
+                "",
+                "registers command §6op Notch §ragainst an alias §oopn"
+            ],
+            "reload" : [
+                "Usage: §6/ucr reload",
+                "  §7[arg] and <arg> means optional/required respectively.",
+                "",
+                "Reloads the plugin data and locale configuration."
+            ],
+            "help" : [
+                "Available sub-commands:",
+                "",
+                "§6/ucr exec [alias]",
+                "  §7Executes an aliased command which has been registered",
+                "",
+                "§6/ucr register [alias] [target] <arg1 <arg2 <...>>>",
+                "  §7Registers an §oalias§r for the command §o§6/target arg1 arg2§r.",
+                "",
+                "§6/ucr reload",
+                "  §7Reloads the plugin data and locale configuration.",
+                "",
+                "Run §6/ucr help <sub-command>§r to see",
+                "detailed help of each sub-command.",
+                ""
+            ]
+        }
+    },
+    "permission" : {
+        "missing" : "§cYou do not have required permissions for that."
+    }
+}
