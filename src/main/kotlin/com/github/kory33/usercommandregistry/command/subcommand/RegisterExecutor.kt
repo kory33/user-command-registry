@@ -36,7 +36,16 @@ class RegisterExecutor(private val plugin: UserCommandRegistry) : SubCommandExec
             return true
         }
 
-        val alias = CommandAlias(args[0], args.drop(1).joinToString(separator = " "))
+        val aliasString = args[0]
+
+        val aliasTarget = args.drop(1).joinToString(separator = " ").let {
+            if (it.first() == '/') {
+                it.subSequence(1, it.lastIndex).toString()
+            } else {
+                it
+            }
+        }
+        val alias = CommandAlias(aliasString, aliasTarget)
 
         registry.addAlias(alias)
 
