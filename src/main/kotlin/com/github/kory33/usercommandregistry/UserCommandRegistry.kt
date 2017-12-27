@@ -5,10 +5,9 @@ import com.github.kory33.chatgui.listener.PlayerChatInterceptor
 import com.github.kory33.chatgui.manager.PlayerInteractiveInterfaceManager
 import com.github.kory33.updatenotificationplugin.bukkit.github.GithubUpdateNotifyPlugin
 import com.github.kory33.usercommandregistry.command.UCRCommandExecutor
-import com.github.kory33.usercommandregistry.data.CommandRegistry
 import com.github.kory33.usercommandregistry.data.CommandRegistryManager
 import com.github.kory33.usercommandregistry.util.config.LocaleConfig
-import com.github.kory33.usercommandregistry.util.data.PlayerDataAutoSaver
+import com.github.kory33.usercommandregistry.util.data.DataAutoSaver
 import org.bstats.bukkit.Metrics
 import org.bukkit.event.HandlerList
 import java.io.File
@@ -30,7 +29,7 @@ class UserCommandRegistry : GithubUpdateNotifyPlugin() {
 
     private var areLateinitInitialized = false
 
-    private var autoSaver: PlayerDataAutoSaver<CommandRegistry>? = null
+    private var autoSaver: DataAutoSaver? = null
 
     lateinit var locale: LocaleConfig
         private set
@@ -65,7 +64,7 @@ class UserCommandRegistry : GithubUpdateNotifyPlugin() {
             areLateinitInitialized = true
         }
 
-        autoSaver = PlayerDataAutoSaver(commandRegistryManager, 20 * 60 * 5, false)
+        autoSaver = DataAutoSaver(commandRegistryManager, this, 20 * 60 * 5, false)
 
         getCommand(COMMAND_STRING).executor = UCRCommandExecutor(this)
 
@@ -73,10 +72,12 @@ class UserCommandRegistry : GithubUpdateNotifyPlugin() {
     }
 
     override fun onDisable() {
+        if (!this.isEnabled) return
+
         autoSaver?.stopAutoSaveTask()
         autoSaver = null
 
-        commandRegistryManager.saveAllPlayerDataSync()
+        commandRegistryManager.writeData()
 
         HandlerList.unregisterAll(this)
     }

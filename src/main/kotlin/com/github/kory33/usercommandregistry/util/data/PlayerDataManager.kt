@@ -26,7 +26,7 @@ import java.util.function.Supplier
  */
 abstract class PlayerDataManager<out T> protected constructor(internal val plugin: JavaPlugin,
                                                               private val folderName: String,
-                                                              private val factory: PlayerDataFactory<T>) : Listener {
+                                                              private val factory: PlayerDataFactory<T>) : Listener, IWritable {
 
     private val fileRWExecutor = Executors.newFixedThreadPool(1)
     private val saveTargetDirectory = plugin.dataFolder.resolve(folderName)
@@ -42,7 +42,7 @@ abstract class PlayerDataManager<out T> protected constructor(internal val plugi
 
     private fun getPlayerDataTargetFile(playerUuid: UUID) = saveTargetDirectory.resolve(playerUuid.toString() + ".json")
 
-    private fun savePlayerDataSync(playerUuid: UUID) {
+    private fun savePlayerData(playerUuid: UUID) {
         val playerData = playerDataMap[playerUuid] ?: return
 
         val serializedData = factory.serialize(playerData)
@@ -63,10 +63,7 @@ abstract class PlayerDataManager<out T> protected constructor(internal val plugi
      */
     fun getLoadedPlayerData(playerUuid: UUID) = playerDataMap[playerUuid]
 
-    /**
-     * Save all the loaded data synchronously.
-     */
-    fun saveAllPlayerDataSync() = playerDataMap.keys.forEach { savePlayerDataSync(it) }
+    override fun writeData() = playerDataMap.keys.forEach { savePlayerData(it) }
 
     @EventHandler
     fun onPlayerJoin(event: PlayerJoinEvent) {
@@ -85,7 +82,7 @@ abstract class PlayerDataManager<out T> protected constructor(internal val plugi
     @EventHandler
     fun onPlayerQuit(event: PlayerQuitEvent) {
         CompletableFuture.runAsync(Runnable {
-            savePlayerDataSync(event.player.uniqueId)
+            savePlayerData(event.player.uniqueId)
         }, fileRWExecutor).thenRun {
             playerDataMap.remove(event.player.uniqueId)
         }
