@@ -16,16 +16,19 @@ import java.io.File
 const val COMMAND_STRING = "ucr"
 
 class UserCommandRegistry : GithubUpdateNotifyPlugin() {
-    var chatInterceptor: PlayerChatInterceptor? = null
+    lateinit var chatInterceptor: PlayerChatInterceptor
         private set
-    var interfaceManager : PlayerInteractiveInterfaceManager? = null
+    lateinit var interfaceManager : PlayerInteractiveInterfaceManager
         private set
-    var runnableInvoker: RunnableInvoker? = null
+    lateinit var runnableInvoker: RunnableInvoker
         private set
+
     private var metrics: Metrics? = null
 
-    var commandRegistryManager: CommandRegistryManager? = null
+    lateinit var commandRegistryManager: CommandRegistryManager
         private set
+
+    private var areLateinitInitialized = false
 
     private var autoSaver: PlayerDataAutoSaver<CommandRegistry>? = null
 
@@ -52,12 +55,17 @@ class UserCommandRegistry : GithubUpdateNotifyPlugin() {
     override fun onEnable() {
         locale = getLocaleConfiguration()
 
-        runnableInvoker = runnableInvoker ?: RunnableInvoker.getRegisteredInstance(this, COMMAND_STRING)
-        interfaceManager = interfaceManager ?: PlayerInteractiveInterfaceManager()
-        commandRegistryManager = commandRegistryManager ?: CommandRegistryManager(this)
-        chatInterceptor = chatInterceptor ?: PlayerChatInterceptor(this)
+        if (!areLateinitInitialized) {
+            runnableInvoker = RunnableInvoker.getRegisteredInstance(this, COMMAND_STRING)!!
+            interfaceManager = PlayerInteractiveInterfaceManager()
+            chatInterceptor = PlayerChatInterceptor(this)
 
-        autoSaver = PlayerDataAutoSaver(commandRegistryManager!!, 20 * 60 * 5, false)
+            commandRegistryManager = CommandRegistryManager(this)
+
+            areLateinitInitialized = true
+        }
+
+        autoSaver = PlayerDataAutoSaver(commandRegistryManager, 20 * 60 * 5, false)
 
         getCommand(COMMAND_STRING).executor = UCRCommandExecutor(this)
 
@@ -68,7 +76,7 @@ class UserCommandRegistry : GithubUpdateNotifyPlugin() {
         autoSaver?.stopAutoSaveTask()
         autoSaver = null
 
-        commandRegistryManager?.saveAllPlayerDataSync()
+        commandRegistryManager.saveAllPlayerDataSync()
 
         HandlerList.unregisterAll(this)
     }
