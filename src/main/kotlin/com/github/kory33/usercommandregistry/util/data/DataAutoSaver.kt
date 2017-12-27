@@ -1,6 +1,5 @@
 package com.github.kory33.usercommandregistry.util.data
 
-import org.bukkit.Server
 import org.bukkit.plugin.java.JavaPlugin
 import java.util.concurrent.CompletableFuture
 import java.util.concurrent.ExecutorService
@@ -13,7 +12,7 @@ class DataAutoSaver(private val dataManager: IWritable,
 
     private var nextAutoSaveTaskId: Int = 0
 
-    private val server: Server = this.taskIssuerPlugin.server
+    private val taskScheduler = this.taskIssuerPlugin.server.scheduler
     private val saveTaskExecutor: ExecutorService = Executors.newFixedThreadPool(1)
 
     private fun scheduleNextAutoSaveTask() {
@@ -23,7 +22,7 @@ class DataAutoSaver(private val dataManager: IWritable,
             this.taskIssuerPlugin.logger.info("Data is being saved asynchronously...")
         }
 
-        this.nextAutoSaveTaskId = server.scheduler.scheduleSyncDelayedTask(
+        this.nextAutoSaveTaskId = taskScheduler.scheduleSyncDelayedTask(
                 this.taskIssuerPlugin,
                 this::scheduleNextAutoSaveTask,
                 this.autoSaveIntervalTicks
@@ -34,7 +33,7 @@ class DataAutoSaver(private val dataManager: IWritable,
      * Stop and cancel the autosave task.
      */
     fun stopAutoSaveTask() {
-        server.scheduler.cancelTask(this.nextAutoSaveTaskId)
+        taskScheduler.cancelTask(this.nextAutoSaveTaskId)
     }
 
     init {
