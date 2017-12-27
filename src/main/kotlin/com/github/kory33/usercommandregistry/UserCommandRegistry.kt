@@ -74,7 +74,7 @@ class UserCommandRegistry : GithubUpdateNotifyPlugin() {
     override fun onDisable() {
         if (!this.isEnabled) return
 
-        autoSaver?.stopAutoSaveTask()
+        autoSaver?.pauseAutoSaveTask()
         autoSaver = null
 
         commandRegistryManager.writeData()
